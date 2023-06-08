@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap By SKILLHUB</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-8 offset-sm-2">
+                <!-- form start -->
+                <div class="card bg-dark text-light mt-4">
+                    <div class="card-header">Add Contact</div>
+                    <div class="card-body">
+                        <input type="text" class="form-control" id="fname" placeholder="Enter Name">
+                        <br>
+                        <input type="text" class="form-control" id="avatar" placeholder="Enter Avatar URL">
+                        <br>
+                        <input type="text" class="form-control" id="mobile" placeholder="Enter Mobile">
+                        <br>
+                        <button onclick="addContact()" type="button" class="btn btn-primary btn-lg w-100">Add
+                            Contact</button>
+                    </div>
+
+                </div>
+                <!-- form end -->
+
+                <!-- table start -->
+                <table class="table table-dark table-striped table-hover mt-5">
+                    <thead>
+                        <tr>
+                            <th scope="col">Sr No</th>
+                            <th scope="col">Avatar</th>
+                            <th scope="col">First Name</th>
+                            <th scope="col">Mobile</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="output">
+
+
+
+                    </tbody>
+                </table>
+                <!-- table end -->
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* this is called in techniqual language ie. crud
+             CRUD
+             C Create
+             R Read
+             U Update
+             D Delete
+        */
+        // whenever we tap to add contact button then show again and again thats why contacts written here 
+        let deleteIndex
+        let editIndex
+        let contacts = [
+            {
+                name: "Satyam",
+                profile: "https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8dXNlcnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60",
+                phone: "4672829020"
+            },
+            {
+                name: "Sanket",
+                profile: "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60",
+                phone: "4672829020"
+            },
+            {
+                name: "Neha",
+                profile: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8dXNlcnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60",
+                phone: "4672829020"
+            }
+        ]
+
+        function addContact() {
+            let fname = document.querySelector("#fname").value
+            let avatar = document.querySelector("#avatar").value
+            let mobile = document.querySelector("#mobile").value
+
+            // console.log(fname, avatar, mobile);
+
+            let user = {
+                name: fname,
+                profile: avatar,
+                phone: mobile
+
+            }
+            contacts.push(user)
+
+            console.log(contacts);
+            display()
+
+
+        }
+
+        function display() {
+
+
+            let str = ""
+            for (let i = 0; i < contacts.length; i++) {
+
+                str += `
+            <tr>
+                 <th scope="row">${i + 1}</th>
+                    <td>
+                        <img src="${contacts[i].profile}"
+                                    height="100" width="100" class="rounded-circle" alt="">
+                    </td>
+                            <td>${contacts[i].name}</td>
+                            <td>${contacts[i].phone}</td>
+                            <td>
+                                <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editModal" onclick="handelEdit(${i})">edit</button>
+                                <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="handleDeleteIndex(${i})">Delete</button>
+                            </td>
+                        </tr>
+            
+            `
+
+            }
+
+            document.querySelector("#output").innerHTML = str
+
+
+        }
+
+        function handelEdit(index) {
+
+            editIndex = index
+            console.log(contacts[index]);
+            // console.log(contacts[index].name);
+            // console.log(contacts[index].profile);
+            // console.log(contacts[index].phone);
+
+            document.querySelector("#mname").value = contacts[index].name
+            document.querySelector("#mprofile").value = contacts[index].profile
+            document.querySelector("#mphone").value = contacts[index].phone
+
+
+        }
+
+        function updateUser() {
+            let mname = document.querySelector("#mname").value
+            let mprofile = document.querySelector("#mprofile").value
+            let mphone = document.querySelector("#mphone").value
+
+            // console.log(mname);
+            // console.log(mprofile);
+            // console.log(mphone);
+
+            contacts[editIndex].name = mname
+            contacts[editIndex].profile = mprofile
+            contacts[editIndex].phone = mphone
+            // why dispaly() is call here bcoz whene edit the data then display updated data thats way call display() here
+            display()
+
+        }
+
+        function handelDeleteIndex(arg) {
+
+            deleteIndex = arg
+            console.log(contacts[arg]);
+
+        }
+
+        function handleDelete() {
+
+
+            contacts.splice(deleteIndex, 1)
+            // why dispaly() is call here bcoz whene delete the data then display without deleted data thats way call display() here
+            display()
+
+
+        }
+
+
+
+
+        display()
+
+
+    </script>
+
+
+
+    <!-- Modal start 1 -->
+    <div class="modal fade" id="deleteModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h1>Are you sure you want to delete</h1>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
+                        onclick="handleDelete()">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal end -->
+
+
+
+    <!-- Modal start 2-->
+    <div class="modal fade" id="editModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    <input id="mname" type="text" class="form-control" placeholder="enter name">
+                    <br>
+                    <input id="mprofile" type="text" class="form-control" placeholder="enter profile">
+                    <br>
+                    <input id="mphone" type="text" class="form-control" placeholder="enter mobile">
+                    <br>
+                    <button type="button" class="btn btn-warning w-100 btn-lg" onclick="updateUser()">Update</button>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- modal end -->
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
+
+<!--
+    to create a new repository on the command line      
+    git init
+    git add README.md
+    git commit -m "first commit"
+    git branch -M main
+    git remote add origin https://github.com/Satyamsable12/js_crud.git
+    git push -u origin main
+
+    to push and update code then use an existing repository from the command line
+    git remote add origin https://github.com/Satyamsable12/js_crud.git
+    git branch -M main
+    git push -u origin main
+
+-->
+
+
+<!-- 
+
+  how to update name url mobile inp btn  
+  create modal window
+  then apply on edit or delete btn
+
+  for deleteindex
+
+  1  pahile let deletindex variable create karaych
+  2  then handledeleteIndex() fun create karycha ani tya mdhe code lihaycha deleteindex = age 
+  3  then console.log(contacts[arg]); kel tr all data conlog mdhe print hoto 
+  4  but to data delete chya btn vrti print zala pahije mnun delete chya btn vrti call karaych  onclick="handelDeleteIndex(${i})"
+  5  then to data delete karaycha asel then create handledelete() fun
+  6  then written some code ani call display() bcoz jevha delete hoyil thevah show karnyasati
+  7  then to data delete zala phije yes btn vrti click kelyavr so yes chya btn vrti call karach  onclick="handleDelete()" 
+
+
+  for editindex
+
+  1  pahile modal edit mdhe all inp or btn lihayche 
+  2  then let editindex variable create karaych
+  3  then handleeditIndex() fun create karycha ani tya mdhe code lihaycha editindex = index 
+  4  then console.log(contacts[index]); kel tr all data conlog mdhe print hoto 
+  5  but to data edit chya btn vrti print zala pahije mnun edit chya btn vrti call karaych  onclick="handelEdit(${i})"
+  6  ani toch data edit chya inp mdhe show honyasati document.querySelector("#mname").value = contacts[index].name lihaych bcoz both are same dispaly inp value = edit modal inp value
+  7  then update chya btn vrti click kelyavr ti value update zali pahije tya sati create a updateUser() fun and written code 
+  8  modal chya inp value hi update zali pahije so let mname = document.querySelector("#mname").value written this
+  9  ani ti page vrti update zali pahije so   contacts[editIndex].name = mname written this both are same 
+ 10  then call display() bcoz jevha edit hoyil thevah show karnyasati 
+ 11  then to data edit zala phije update btn vrticlick kelyavr so update chya btn vrti call karach onclick="updateUser()"
+  
+
+-->
